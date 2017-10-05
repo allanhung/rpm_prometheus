@@ -30,7 +30,7 @@ mkdir -vp %{buildroot}/etc/prometheus
 mkdir -vp %{buildroot}/usr/share/prometheus/console_libraries
 mkdir -vp %{buildroot}/usr/share/prometheus/consoles
 mkdir -vp %{buildroot}/usr/lib/systemd/system
-mkdir -vp %{buildroot}/etc/default
+mkdir -vp %{buildroot}/etc/sysconfig
 install -m 755 bin/prometheus %{buildroot}/usr/bin/prometheus
 install -m 755 bin/promtool %{buildroot}/usr/bin/promtool
 for dir in console_libraries consoles; do
@@ -65,5 +65,5 @@ exit 0
 %config(noreplace) /etc/prometheus/prometheus.yml
 /usr/share/prometheus
 /usr/lib/systemd/system/prometheus.service
-%config(noreplace) /etc/default/prometheus
+%config(noreplace) /etc/sysconfig/prometheus
 %attr(755, prometheus, prometheus)/var/lib/prometheus

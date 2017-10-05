@@ -1,6 +1,8 @@
 PROMETHEUSVER=${1:-'1.7.2'}
+RPMVER="${PROMETHEUSVER/-/_}"
 export RPMBUILDROOT=/root/rpmbuild
 export GOPATH=/usr/share/gocode
+export PATH=$GOPATH/bin:$PATH
 
 # go repo
 rpm --import https://mirror.go-repo.io/centos/RPM-GPG-KEY-GO-REPO
@@ -28,4 +30,5 @@ promu build --prefix bin
 touch $RPMBUILDROOT/SOURCES/prometheus.sysconfig
 /bin/cp -f /usr/local/src/build/prometheus.service $RPMBUILDROOT/SOURCES/
 
+sed -i -e "s/^Version:.*/Version: $RPMVER/g" /usr/local/src/build/prometheus.spec > $RPMBUILDROOT/SPECS/prometheus.spec
 rpmbuild -bb $RPMBUILDROOT/SPECS/prometheus.spec
