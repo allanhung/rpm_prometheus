@@ -35,5 +35,5 @@ else
   /bin/cp -f /usr/local/src/build/prometheus.service $RPMBUILDROOT/SOURCES/
 fi
 
-sed -i -e "s/^Version:.*/Version: $RPMVER/g" /usr/local/src/build/prometheus.spec > $RPMBUILDROOT/SPECS/prometheus.spec
+sed -e "s/^Version:.*/Version: $RPMVER/g" /usr/local/src/build/prometheus.spec > $RPMBUILDROOT/SPECS/prometheus.spec
 rpmbuild -bb $RPMBUILDROOT/SPECS/prometheus.spec
