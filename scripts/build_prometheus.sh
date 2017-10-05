@@ -1,5 +1,6 @@
 PROMETHEUSVER=${1:-'1.7.2'}
 RPMVER="${PROMETHEUSVER/-/_}"
+MAJOR_VERION=${PROMETHEUSVER:0:1}
 export RPMBUILDROOT=/root/rpmbuild
 export GOPATH=/usr/share/gocode
 export PATH=$GOPATH/bin:$PATH
@@ -28,7 +29,11 @@ cd $GOPATH/src/github.com/prometheus/prometheus
 promu build --prefix bin
 
 touch $RPMBUILDROOT/SOURCES/prometheus.sysconfig
-/bin/cp -f /usr/local/src/build/prometheus.service $RPMBUILDROOT/SOURCES/
+if [[ $MAJOR_VERION -gt 1 ]]; then
+  sed -e "s/storage.local/storage.tsdb/g" /usr/local/src/build/prometheus.service > $RPMBUILDROOT/SOURCES/prometheus.service
+else
+  /bin/cp -f /usr/local/src/build/prometheus.service $RPMBUILDROOT/SOURCES/
+fi
 
 sed -i -e "s/^Version:.*/Version: $RPMVER/g" /usr/local/src/build/prometheus.spec > $RPMBUILDROOT/SPECS/prometheus.spec
 rpmbuild -bb $RPMBUILDROOT/SPECS/prometheus.spec
